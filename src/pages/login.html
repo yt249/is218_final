@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="login.js"></script>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="Validate.js"></script>
 </head>
 <body>
-    <h1>Login</h1>
+<h1>Login</h1>
 
-    <br> <br>
+<br> <br>
+<form action="login.php" method='POST' onsubmit="return validate()">
+  <label for="username">User:</label><br>
+  <input type="text" name="username" id="username" required> <br> <br>
 
-    <form>
-        User:
-        <input type="email" name="username" id="username"> <br> <br>
+  <label for="password">Password:</label><br>
+  <input type="password" name="password" id="password" required> <br> <br>
 
-        Password:
-        <input type="password" name="password" id="password"> <br> <br>
+  <button type="submit" value="submit"> Sign IN ! </button>
 
-        <input type="button" value="Login" onclick="validate()">
-        <input type="reset" value= "Cancel">
-    </form>
+  <!--         <input type="submit" value="Submit"> -->
+</form>
 
-    <style>
-        h1 {
-            text-align: center;
-        }
+<style>
+  h1 {
+    text-align: center;
+  }
 
-        form {
-            text-align: center;
-            border-style: solid;
-            padding: 20px;
-        }
-    </style>
+  form {
+    text-align: center;
+    border-style: solid;
+    padding: 20px;
+  }
+</style>
 </body>
+
 </html>
