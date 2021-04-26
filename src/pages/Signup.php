@@ -46,7 +46,7 @@ try{
         $error .= 'user name already exists';
         $duplicate = true;
     };
-    if ($error==""){
+    if ($error=="") {
         runQuery($insertQuery, $conn);
     }else{
         echo ("<script>
