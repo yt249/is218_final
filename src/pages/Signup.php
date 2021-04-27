@@ -1,22 +1,20 @@
 <?php
 
 // AFS login
-// $hostname = "sql1.njit.edu";
-// $username = "yt249";
-// $password = "A_zxc19981128!";
-// $dbname = "yt249";
+$hostname = "sql1.njit.edu";
+$username = "yt249";
+$password = "A_zxc19981128!";
+$dbname = "yt249";
 
 // local
-$hostname = "localhost";
-$username = "root";
-$password = "";
-$dbname = "SpringBreak";
+// $hostname = "localhost";
+// $username = "root";
+// $password = "";
+// $dbname = "SpringBreak";
 
 try{
     $conn = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
     if($conn != null){
-        echo "<script>alert('successfully connected');</script>";
-        echo"<br>";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 }catch(PDOException $e){
@@ -34,25 +32,26 @@ $checkEmailQuery = "SELECT * FROM 218User WHERE email='$email'";
 $insertQuery = "INSERT INTO 218User (firstName, lastName, email, userName, pass)
                 VALUES ('$fname', '$lname', '$email', '$username', '$pass');";
 
-$duplicate = false;
 $error = "";
 
 try{
     if (count(runQuery($checkEmailQuery, $conn)) === 1){
         $error .= 'email already exists\n';
-        $duplicate = true;
     };
     if (count(runQuery($checkUserNameQuery, $conn)) === 1){
         $error .= 'user name already exists';
-        $duplicate = true;
     };
     if ($error=="") {
-        runQuery($insertQuery, $conn);
+        runQueryInsert($insertQuery, $conn);
+        echo "<script>
+                    window.alert('Successfully signed up!');
+           			window.location.href='login.html';
+           	  </script>";
     }else{
-        echo ("<script>
+        echo "<script>
    				 window.alert('$error');
    				 window.location.href='Signup.html';
-   			   </script>");
+   			  </script>";
     }
 }catch (PDOException $e){
     echo "<script>alert('$e');</script>";
@@ -65,6 +64,16 @@ function runQuery($query, $conn){
         $results = $q->fetchAll();
         $q->closeCursor();
         return $results;
+    } catch (PDOException $e) {
+        http_error("500 Internal Server Error\n\n"."There was a SQL error:\n\n" . $e->getMessage());
+    }
+}
+
+function runQueryInsert($query, $conn){
+    try {
+        $q = $conn->prepare($query);
+        $q->execute();
+        $q->closeCursor();
     } catch (PDOException $e) {
         http_error("500 Internal Server Error\n\n"."There was a SQL error:\n\n" . $e->getMessage());
     }

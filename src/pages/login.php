@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
@@ -19,38 +20,44 @@ ini_set('display_errors', 'on');
 try{
     $conn = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
     if($conn != null){
-        echo "<script>alert('successfully connected');</script>";
-        echo"<br>";
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 } catch(PDOException $e){
     http_error("500 Internal Server Error"."There was a SQL error:" . $e->getMessage());
 }
 
-console.log("hi this is a test");
-
-    $username = $_POST['username'];
-    $pass = $_POST['password'];
-
-console.log("test2");
+$user = $_POST['username'];
+$pass = $_POST['password'];
 
 try {
-    $checkUserQuery = "SELECT password from 218User WHERE username = '$username' OR email = '$username'";
+    $checkUserQuery = "SELECT * from 218User WHERE userName = '$user' OR email = '$user'";
     $results = runQuery($checkUserQuery, $conn);
 
-    foreach ($results as $result){
-         echo"<script>alert($result[password])</script>";
-    }
-
-    // echo "<script>alert($result);</script>";
-   // echo "<script>alert($password);</script>";
-
     if (count($results) == 1) {
-        if ($result['password'] == $password) {
-            echo "<script>
-                     alert('welcome to our website');
-                     window.location.href='home.html';
-                   </script>";
+        if ($results[0]['pass'] == $pass) {
+        $user = $results[0]['userName'];
+        $firstname = $results[0]['firstName'];
+        $lastname = $results[0]['lastName'];
+        ?>
+        <script>
+        let user = "<?php echo $user ?>";
+        let firstname = "<?php echo $firstname ?>";
+        let lastname = "<?php echo $lastname ?>";
+        sessionStorage.setItem("login", "true");
+        sessionStorage.setItem("user", String(user));
+        sessionStorage.setItem("firstname", String(firstname));
+        sessionStorage.setItem("lastname", String(lastname));
+        alert(firstname + ", welcome to our website");
+        window.location.href='Todo.php';
+        </script>
+        <?php
+        $_SESSION['user']=$user;
+//         	$_SESSION["login"]=true;
+//             $_SESSION["user"]=$results[0]['userName'];
+//             echo "<script>
+//                      alert('welcome to our website');
+//                      window.location.href='Todo.php';
+//                    </script>";
         } else {
             echo "<script>alert('incorrect password');</script>";
             echo "<script>
@@ -78,7 +85,6 @@ function runQuery($query, $conn){
         http_error("500 Internal Server Error\n\n"."There was a SQL error:\n\n" . $e->getMessage());
     }
 }
-
 
 function http_error($message) {
     header("Content-type: text/plain");
