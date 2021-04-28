@@ -210,9 +210,12 @@ function http_error($message) {
         			<th><a href="?orderBy=descr">Description</a></th>
         			<th><a href="?orderBy=dueDate">Due Date</a></th>
         			<th><a href="?orderBy=urgency">Priority</a></th>
+        			<th><a href="?orderBy=dueDate">Days Due</a></th>
         		</tr>
         	</thead>
         <?php
+        date_default_timezone_set("America/New_York");
+        $currentTime = strtotime(date("Y/m/d H:i:s"));
         $orderBy = array('title', 'descr', 'dueDate', 'urgency');
         $username = $_SESSION['user'];
 		$order = 'dueDate';
@@ -234,6 +237,9 @@ function http_error($message) {
     			}else if ($result['urgency']==2){
     				$prioritydata = 'Very Important';
     			}
+    			$datetime = strtotime($result[dueDate]);
+                $secs = $datetime - $currentTime;
+                $days = floor($secs / 86400);
             	echo "<tr onclick='edit(this)'>";
             		echo "<td style='display:none;' width='15%'>$result[taskid]</td>";
             		echo "<td width='15%'>$result[title]</td>";
@@ -241,6 +247,13 @@ function http_error($message) {
             		echo "<td width='15%'>$result[dueDate]</td>";
             		echo "<td width='15%'>$prioritydata</td>";
                 	echo "<td style='display:none;' width='15%'>$result[completed]</td>";
+                	if ($days>=0){
+                        $dueDays = $days.' days left';
+                        echo "<td width='10%'>$dueDays</td>";
+                    }else{
+                        $dueDays = (-$days).' days ago';
+                        echo "<td width='10%'>$dueDays</td>";
+                    }
         		echo "</tr>";
     		}
 		}catch (PDOException $e){
@@ -288,6 +301,7 @@ function http_error($message) {
         			<th><a href="?orderBy=descr">Description</a></th>
         			<th><a href="?orderBy=dueDate">Due Date</a></th>
         			<th><a href="?orderBy=urgency">Priority</a></th>
+        			<th><a href="?orderBy=dueDate">Days Due</a></th>
         		</tr>
         	</thead>
         <?php
@@ -303,23 +317,32 @@ function http_error($message) {
 		$uncompletedQuery = "SELECT * FROM 218Task WHERE userName='$username' AND completed = false ORDER BY ".$order." ".$ascdesc;
 
         try{
-    		//display uncomplete tasks
-    		foreach (runQuery($uncompletedQuery, $conn) as $result){
-    			if ($result['urgency']==0){
-    				$prioritydata = 'Normal';
-    			}else if ($result['urgency']==1){
-    				$prioritydata = 'Important';
-    			}else if ($result['urgency']==2){
-    				$prioritydata = 'Very Important';
-    			}
-            	echo "<tr onclick='edit(this)'>";
-            		echo "<td style='display:none;' width='15%'>$result[taskid]</td>";
-            		echo "<td width='15%'>$result[title]</td>";
-            		echo "<td width='15%'>$result[descr]</td>";
-            		echo "<td width='15%'>$result[dueDate]</td>";
-            		echo "<td width='15%'>$prioritydata</td>";
-                	echo "<td style='display:none;' width='15%'>$result[completed]</td>";
-        		echo "</tr>";
+            foreach (runQuery($uncompletedQuery, $conn) as $result){
+                if ($result['urgency']==0){
+                    $prioritydata = 'Normal';
+                }else if ($result['urgency']==1){
+                    $prioritydata = 'Important';
+                }else if ($result['urgency']==2){
+                    $prioritydata = 'Very Important';
+                }
+                $datetime = strtotime($result[dueDate]);
+                $secs = $datetime - $currentTime;
+                $days = floor($secs / 86400);
+                echo "<tr onclick='edit(this)'>";
+                    echo "<td style='display:none;' width='15%'>$result[taskid]</td>";
+                    echo "<td width='15%'>$result[title]</td>";
+                    echo "<td width='15%'>$result[descr]</td>";
+                    echo "<td width='15%'>$result[dueDate]</td>";
+                    echo "<td width='15%'>$prioritydata</td>";
+                    echo "<td style='display:none;' width='15%'>$result[completed]</td>";
+                    if ($days>=0){
+                        $dueDays = $days.' days left';
+                        echo "<td width='10%'>$dueDays</td>";
+                    }else{
+                        $dueDays = (-$days).' days ago';
+                        echo "<td width='10%'>$dueDays</td>";
+                    }
+                echo "</tr>";
     		}
 		}catch (PDOException $e){
     		echo "<script>alert('$e');</script>";
