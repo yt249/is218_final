@@ -209,11 +209,14 @@ function http_error($message) {
         			<th><a href="?orderBy=descr">Description</a></th>
         			<th><a href="?orderBy=dueDate">Due Date</a></th>
         			<th><a href="?orderBy=urgency">Priority</a></th>
+        			<th><a href="?orderBy=dueDate">Days Due</a></th>
         		</tr>
         	</thead>
         <?php
-        $orderBy = array('title', 'descr', 'dueDate', 'urgency');
+        date_default_timezone_set("America/New_York");
+        $currentTime = strtotime(date("Y/m/d H:i:s"));
 
+        $orderBy = array('title', 'descr', 'dueDate', 'urgency');
 		$order = 'dueDate';
 		$ascdesc = 'DESC';
 		if (isset($_GET['orderBy']) && in_array($_GET['orderBy'], $orderBy)) {
@@ -233,6 +236,10 @@ function http_error($message) {
     			}else if ($result['urgency']==2){
     				$prioritydata = 'Very Important';
     			}
+    		    $datetime = strtotime($result[dueDate]);
+    		    $secs = $datetime - $currentTime;
+    		    $days = floor($secs / 86400);
+
             	echo "<tr onclick='edit(this)'>";
             		echo "<td style='display:none;' width='15%'>$result[taskid]</td>";
             		echo "<td width='15%'>$result[title]</td>";
@@ -240,6 +247,13 @@ function http_error($message) {
             		echo "<td width='15%'>$result[dueDate]</td>";
             		echo "<td width='15%'>$prioritydata</td>";
                 	echo "<td style='display:none;' width='15%'>$result[completed]</td>";
+                	if ($days>=0){
+                	    $dueDays = $days.' days left';
+                	    echo "<td width='10%'>$dueDays</td>";
+                	}else{
+                	    $dueDays = (-$days).' days ago';
+                	    echo "<td width='10%'>$dueDays</td>";
+                	}
         		echo "</tr>";
     		}
 		}catch (PDOException $e){
