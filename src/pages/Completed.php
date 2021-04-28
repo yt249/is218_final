@@ -61,13 +61,7 @@
 </script>
 <?php
 session_start();
-//
-// if(isset($_SESSION["login"]) == true){
-//     echo "<script>
-//             alert('You have not logged in');
-//             window.location.href='login.html';
-//           </script>";
-// }
+
 // AFS login
 $hostname = "sql1.njit.edu";
 $username = "yt249";
@@ -119,12 +113,10 @@ if(isset($_POST['submit'])){
 	}
 }
 if(isset($_POST['submitedit'])){
-	//$username = $_POST['username'];
 	$taskname = $_POST['editTaskName'];
 	$taskdescrip = $_POST['editDescription'];
 	$id = $_POST['stored'];
 
-	//datetime format has to be yyyy-mm-dd(yyyy/mm/dd) hh:mm:ss (string type)
 	$duedate = $_POST['editDueDate'];
 	$taskurgency = $_POST['editPriority'];
 	$completed = $_POST['editCompleted'];
@@ -267,7 +259,7 @@ function http_error($message) {
             <h2>Edit Section</h2>
             Task Name: <input type="text" id="editTaskName" name="editTaskName"><br>
             Description: <input type="text" id="editDescription" name="editDescription"><br>
-            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate"><br>
+            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate" placeholder="yyyy-mm-dd hh:mm"><br>
             <span class = "validity"></span>
             Priority:
             <select id="editPriority" name="editPriority" class = "form-control">
@@ -281,8 +273,8 @@ function http_error($message) {
             	<option value=0 >     Uncomplete</option>
         	</select>
         	<input id="stored" name="stored" style="display:none;">
-
-            <button type="submit" name="submitedit" class="btn">Edit</button>
+            <br>
+            <button type="submit" name="submitedit" class="btn">Submit Edit</button>
             <button type="submit" name="submitdelete" class="btn">Delete</button>
             <button type="button" class="btn cancel" onclick="clearForm()"> Close Form</button>
     	</form>
@@ -316,6 +308,10 @@ function http_error($message) {
             bottom: 23px;
             right: 28px;
             width: 280px;
+        }
+
+        tr:hover{
+            background-color: #e6e6ff;
         }
 
         /* The popup form - hidden by default */
@@ -372,6 +368,19 @@ function http_error($message) {
         .form-container .btn:hover, .open-button:hover {
             opacity: 1;
         }
+
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            font-size: 17px;
+        }
+        ::-moz-placeholder { /* Firefox 19+ */
+            font-size: 17px;
+        }
+        :-ms-input-placeholder { /* IE 10+ */
+            font-size: 17px;
+        }
+        :-moz-placeholder { /* Firefox 18- */
+            font-size: 17px;
+        }
     </style>
 </head>
 <body>
@@ -396,7 +405,7 @@ function http_error($message) {
             <option value=2 > Very-Important</option>
         </select>
         <label><b>Date & Time</b></label>
-        <input id = "text" type = "datetime-local" name="dueDate">
+        <input id = "text" type = "datetime-local" name="dueDate" placeholder="yyyy-mm-dd hh:mm">
         <span class = "validity"></span>
 
         <button type="submit" name="submit" class="btn">Create</button>

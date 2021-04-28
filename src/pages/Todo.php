@@ -60,13 +60,6 @@
 </script>
 <?php
 session_start();
-//
-// if(isset($_SESSION["login"]) != true){
-//     echo "<script>
-//             alert('You have not logged in');
-//             window.location.href='login.html';
-//           </script>";
-// }
 
 // AFS login
 $hostname = "sql1.njit.edu";
@@ -100,11 +93,9 @@ $createQuery = "CREATE TABLE IF NOT EXISTS 218Task(
 
 $error = "";
 if(isset($_POST['submit'])){
-	//$username = $_POST['username'];
 	$taskname = $_POST['taskName'];
 	$taskdescrip = $_POST['taskDescrip'];
 
-	//datetime format has to be yyyy-mm-dd(yyyy/mm/dd) hh:mm:ss (string type)
 	$duedate = $_POST['dueDate'];
 	$taskurgency = $_POST['priority'];
 	$username = $_SESSION['user'];
@@ -125,7 +116,6 @@ if(isset($_POST['submitedit'])){
 	$taskdescrip = $_POST['editDescription'];
 	$id = $_POST['stored'];
 
-	//datetime format has to be yyyy-mm-dd(yyyy/mm/dd) hh:mm:ss (string type)
 	$duedate = $_POST['editDueDate'];
 	$taskurgency = $_POST['editPriority'];
 	$completed = $_POST['editCompleted'];
@@ -268,7 +258,7 @@ function http_error($message) {
             <h2>Edit Section</h2>
             Task Name: <input type="text" id="editTaskName" name="editTaskName"><br>
             Description: <input type="text" id="editDescription" name="editDescription"><br>
-            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate"><br>
+            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate" placeholder="yyyy-mm-dd hh:mm"><br>
             <span class = "validity"></span>
             Priority:
             <select id="editPriority" name="editPriority" class = "form-control">
@@ -282,8 +272,8 @@ function http_error($message) {
             	<option value=0 >     Uncomplete</option>
         	</select>
         	<input id="stored" name="stored" style="display:none;">
-
-            <button type="submit" name="submitedit" class="btn">Edit</button>
+            <br>
+            <button type="submit" name="submitedit" class="btn">Submit Edit</button>
             <button type="submit" name="submitdelete" class="btn">Delete</button>
             <button type="button" class="btn cancel" onclick="clearForm()"> Close Form</button>
     	</form>
@@ -328,7 +318,7 @@ function http_error($message) {
                 $datetime = strtotime($result[dueDate]);
                 $secs = $datetime - $currentTime;
                 $days = floor($secs / 86400);
-                echo "<tr onclick='edit(this)'>";
+                echo "<tr onclick='edit(this)' style=':hover'>";
                     echo "<td style='display:none;' width='15%'>$result[taskid]</td>";
                     echo "<td width='15%'>$result[title]</td>";
                     echo "<td width='15%'>$result[descr]</td>";
@@ -366,6 +356,9 @@ function http_error($message) {
             border: 3px solid #f1f1f1;
 		}
 
+        tr:hover{
+            background-color: #e6e6ff;
+        }
 
         /* Button used to open the contact form - fixed at the bottom of the page */
         .open-button {
@@ -435,6 +428,19 @@ function http_error($message) {
         .form-container .btn:hover, .open-button:hover {
             opacity: 1;
         }
+
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            font-size: 17px;
+        }
+        ::-moz-placeholder { /* Firefox 19+ */
+            font-size: 17px;
+        }
+        :-ms-input-placeholder { /* IE 10+ */
+            font-size: 17px;
+        }
+        :-moz-placeholder { /* Firefox 18- */
+            font-size: 17px;
+        }
     </style>
 </head>
 <body>
@@ -459,7 +465,7 @@ function http_error($message) {
             <option value=2 > Very-Important</option>
         </select>
         <label><b>Date & Time</b></label>
-        <input id = "text" type = "datetime-local" name="dueDate">
+        <input id = "text" type = "datetime-local" name="dueDate" placeholder="yyyy-mm-dd hh:mm">
         <span class = "validity"></span>
 
         <button type="submit" name="submit" class="btn">Create</button>
@@ -488,7 +494,6 @@ function http_error($message) {
         </div>
     </div>
 </footer>
-
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
