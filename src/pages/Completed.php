@@ -5,7 +5,7 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
 </head>
 <body>
 <div class="container-fluid">
@@ -256,7 +256,7 @@ function http_error($message) {
 </div>
 <div class="col-4  text-center">
         <form action="" class="form-container" method="POST" id="myFormEdit">
-            <h2>Edit Section</h2>
+            <h3>Edit Section</h2>
             Task Name: <input type="text" id="editTaskName" name="editTaskName"><br>
             Description: <input type="text" id="editDescription" name="editDescription"><br>
             Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate" placeholder="yyyy-mm-dd hh:mm"><br>
@@ -274,9 +274,9 @@ function http_error($message) {
         	</select>
         	<input id="stored" name="stored" style="display:none;">
             <br>
-            <button type="submit" name="submitedit" class="btn">Submit Edit</button>
-            <button type="submit" name="submitdelete" class="btn">Delete</button>
-            <button type="button" class="btn cancel" onclick="clearForm()"> Close Form</button>
+            <button type="submit" name="submitedit" >Submit Edit</button>
+            <button type="submit" name="submitdelete" >Delete</button>
+            <button type="button" onclick="clearForm()"> Close Form</button>
     	</form>
         </div>
 </div>
@@ -305,9 +305,9 @@ function http_error($message) {
             cursor: pointer;
             opacity: 0.8;
             position: fixed;
-            bottom: 23px;
+            bottom: 50px;
             right: 28px;
-            width: 280px;
+            width: 200px;
         }
 
         tr:hover{
@@ -318,7 +318,7 @@ function http_error($message) {
         .form-popup {
             display: none;
             position: fixed;
-            bottom: 5;
+            bottom: 47px;
             right: 15px;
             border: 3px solid #f1f1f1;
             z-index: 9;
@@ -329,6 +329,7 @@ function http_error($message) {
             max-width: 300px;
             padding: 10px;
             background-color: white;
+            margin:0;
         }
 
         /* Full-width input fields */
@@ -354,7 +355,7 @@ function http_error($message) {
             padding: 7px 10px;
             border: none;
             cursor: pointer;
-            width: 75%;
+            width: 100px;
             margin-bottom:10px;
             opacity: 0.8;
         }
@@ -388,26 +389,25 @@ function http_error($message) {
 
 <button class="open-button" onclick="openForm()">Add Task</button>
 
-<div class="form-popup" id="myForm">
+<div class="form-popup" id="myForm" style="text-align:center">
     <form action="" class="form-container" method="POST">
-        <h1>Add New Task</h1>
+        <h3>Add New Task</h1>
 
-        <label><b>Name</b></label>
+        <label>Name</label>
         <input type="text" placeholder="Enter name of task here" name="taskName" required>
 
-        <label><b>Description</b></label>
+        <label>Description</label>
         <input type="text" placeholder="Enter Description here" name="taskDescrip" required>
 
-        <label><b>Priority</b></label>
+        <label>Priority</label>
         <select name="priority" class = "form-control">
             <option value=0 >        Normal</option>
             <option value=1 >     Important</option>
             <option value=2 > Very-Important</option>
         </select>
-        <label><b>Date & Time</b></label>
+        <label>Date & Time</label>
         <input id = "text" type = "datetime-local" name="dueDate" placeholder="yyyy-mm-dd hh:mm">
-        <span class = "validity"></span>
-
+        <br><br>
         <button type="submit" name="submit" class="btn">Create</button>
         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
@@ -427,12 +427,8 @@ function http_error($message) {
 </body>
 
 </div>
-<footer class="footer page-footer font-small ">
-    <div class="container">
-        <div class="row">
-            <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
-        </div>
-    </div>
+<footer class="footer">
+    <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
 </footer>
 
 

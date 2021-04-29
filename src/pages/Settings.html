@@ -7,8 +7,8 @@
     let firstname = sessionStorage.getItem("firstname");
     let lastname = sessionStorage.getItem("lastname");
     if(login !== "true"){
-        alert("You have not logged in");
-        window.location.href = "login.html";
+        //alert("You have not logged in");
+        //window.location.href = "login.html";
     }
 
     function changeOption() {
@@ -16,27 +16,18 @@
 
 
         if(choose.value == 'choose') {
-            document.getElementById("oldusr").style.visibility = 'hidden';
-            document.getElementById("newusr").style.visibility = 'hidden';
-
-            document.getElementById("oldpass").style.visibility = 'hidden';
-            document.getElementById("newpass").style.visibility = 'hidden';
+            document.getElementById("changeUser").style.display = 'none';
+            document.getElementById("changePass").style.display = 'none';
         }
 
         if(choose.value == 'user') {
-            document.getElementById("oldusr").style.visibility = 'visible';
-            document.getElementById("newusr").style.visibility = 'visible';
-
-            document.getElementById("oldpass").style.visibility = 'hidden';
-            document.getElementById("newpass").style.visibility = 'hidden';
+            document.getElementById("changeUser").style.display = 'block';
+            document.getElementById("changePass").style.display = 'none';
         }
 
         if(choose.value == 'pass') {
-            document.getElementById("oldusr").style.visibility = 'hidden';
-            document.getElementById("newusr").style.visibility = 'hidden';
-
-            document.getElementById("oldpass").style.visibility = 'visible';
-            document.getElementById("newpass").style.visibility = 'visible';
+            document.getElementById("changeUser").style.display = 'none';
+            document.getElementById("changePass").style.display = 'block';
         }
 
     }
@@ -50,7 +41,8 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+    <script src="Validate.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -94,6 +86,7 @@
         </nav>
 
     </div>
+
     <div class = "row">
         <div class = "col-10">
 
@@ -110,10 +103,13 @@
         <div class="col-8"></div>
     </div>
 
+    <br>
+    <br>
+
     <div class="row">
         <div class="col"></div>
-        <div class = "col">
-            <label>What do you want to change?</label>
+        <div class = "col" style = "text-align: center;">
+            <h3>What do you want to change?</h3>
             <select id="editAcc" onchange="changeOption()" style="padding: 5px 5px">
                 <option value="choose" selected>Choose One</option>
                 <option value="user">Username</option>
@@ -125,57 +121,41 @@
 
     <br>
     <br>
-
-    <div class="row" id="oldusr" style="visibility: hidden">
+    <div class="row">
         <div class="col"></div>
         <div class = "col">
-        <label>Old Username</label>
-            <input type="text" name="olduser" style="padding: 5px 5px">
-        </div>
-        <div class="col"></div>
-    </div>
-
-    <br>
-
-    <div class="row" id="newusr" style="visibility: hidden">
-        <div class="col"></div>
-        <div class = "col">
-            <label>New Username</label>
-            <input type="text" name="newuser" style="padding: 5px 5px">
-        </div>
-        <div class="col"></div>
-    </div>
-
-    <br>
-    <br>
-
-    <div class="row" id="oldpass" style="visibility: hidden">
-        <div class="col"></div>
-        <div class = "col">
-            <label>Old Password</label>
-            <input type="text" name="oldpassword" style="padding: 5px 5px">
-        </div>
-        <div class="col"></div>
-    </div>
-
-    <br>
-
-    <div class="row" id="newpass" style="visibility: hidden">
-        <div class="col"></div>
-        <div class = "col">
-            <label>New Password</label>
-            <input type="text" name="newpassword" style="padding: 5px 5px">
-        </div>
-        <div class="col"></div>
-    </div>
-
-
-    <footer class="footer page-footer font-small ">
-        <div class="container">
-            <div class="row">
-                <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
+        <form id="changeUser" action="Settings.php" method='POST' onsubmit="return validatenewuser()" style="display: none; text-align: center;">
+        <br>
+            <div class="form-group">
+                <label for="newuser">New Username</label>
+                <input type="text" id="newuser" name="newuser" style="padding: 5px 5px">
             </div>
+            <br><br>
+        <button type="submit" name="editUser" class="btn btn-primary">Submit</button>
+        </form>
         </div>
+        <div class="col"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"></div>
+        <div class = "col">
+        <form id="changePass" action="Settings.php" method='POST' onsubmit="return validatenewpass()" style="display: none; text-align: center;">
+            <br>
+            <div class="form-group">
+                <label for="newpass">New Password</label>
+                <input type="text" id="newpass" name="newpass" style="padding: 5px 5px">
+            </div>
+            <br><br>
+            <button type="submit" name="editPass" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+    <div class="col"></div>
+    </div>
+
+
+    <footer class="footer">
+        <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
     </footer>
 
 
