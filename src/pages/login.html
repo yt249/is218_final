@@ -3,22 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous">
+  <link href="main.css" rel="stylesheet">
 </head>
 <body>
-<h1>Login</h1>
+<h1>Login</h1><br> <br>
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
 
-<br> <br>
-<form action="login.php" method='POST'>
-  <label for="username">Username/Email:</label><br>
-  <input type="text" name="username" id="username" required> <br> <br>
-
-  <label for="password">Password:</label><br>
-  <input type="password" name="password" id="password" required> <br> <br>
-
-  <button type="submit" value="submit"> Sign In </button><br>
-  or <br> <a href="Signup.html">Create an Account</a>
-  <!--         <input type="submit" value="Submit"> -->
-</form>
+      <form action="login.php" method='POST'>
+        <div class="form-group">
+          <label for="username">Username/Email:</label><br>
+          <input type="text" name="username" id="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label><br>
+          <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+        <br>
+        <button type="submit" value="submit" class="btn btn-primary"> Sign In </button><br>
+        or <br> <a href="Signup.html">Create an Account</a>
+        <!--         <input type="submit" value="Submit"> -->
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <style>
@@ -26,6 +39,7 @@
   h1 {
     text-align: center;
     color: white;
+    padding-top: 20px;
   }
 
   body {
@@ -33,11 +47,9 @@
     background: linear-gradient(90deg, #e8cbc0, #636fa4);
     padding-right: 100px;
     padding-left: 100px;
-    font-family: Arial;
   }
 
   form {
-    width: 200px;
     padding: 30px 100px 30px 100px;
     margin: auto;
     text-align: center;
@@ -45,17 +57,20 @@
     background: whitesmoke;
     border-radius: 4px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, .3);
-    font-family: Arial;
   }
 
-  button {
-    background-color: #6196CA;
-    color: white;
-    border: none;
-    font-family: Arial;
-  }
+
 
 </style>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

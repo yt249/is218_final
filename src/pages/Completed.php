@@ -192,6 +192,11 @@ function http_error($message) {
 
 <div class = "col-2 col-8">
     <h3> Completed</h3>
+    <?php
+        $query = "SELECT * FROM 218Task WHERE userName='$username' AND completed = true" ;
+        $tasknum = count(runQuery($query, $conn));
+        echo "<p>Total Tasks Number: $tasknum</p>";
+    ?>
     <p class = "text justify-content-evenly">
         <table id="taskTable" border='1px solid black' cellspacing='0' table-layout= 'fixed'>
         	<thead>
@@ -242,7 +247,7 @@ function http_error($message) {
                 	    $dueDays = $days.' days left';
                 	    echo "<td width='10%'>$dueDays</td>";
                 	}else{
-                	    $dueDays = (-$days).' days ago';
+                	    $dueDays = (-$days-1).' days ago';
                 	    echo "<td width='10%'>$dueDays</td>";
                 	}
         		echo "</tr>";
@@ -257,9 +262,9 @@ function http_error($message) {
 <div class="col-4  text-center">
         <form action="" class="form-container" method="POST" id="myFormEdit">
             <h3>Edit Section</h2>
-            Task Name: <input type="text" id="editTaskName" name="editTaskName"><br>
-            Description: <input type="text" id="editDescription" name="editDescription"><br>
-            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate" placeholder="yyyy-mm-dd hh:mm"><br>
+            Task Name: <input type="text" id="editTaskName" name="editTaskName" required><br>
+            Description: <input type="text" id="editDescription" name="editDescription" required><br>
+            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate" placeholder="yyyy-mm-dd hh:mm" required><br>
             <span class = "validity"></span>
             Priority:
             <select id="editPriority" name="editPriority" class = "form-control">
@@ -406,7 +411,7 @@ function http_error($message) {
             <option value=2 > Very-Important</option>
         </select>
         <label>Date & Time</label>
-        <input id = "text" type = "datetime-local" name="dueDate" placeholder="yyyy-mm-dd hh:mm">
+        <input id = "text" type = "datetime-local" name="dueDate" placeholder="yyyy-mm-dd hh:mm" required>
         <br><br>
         <button type="submit" name="submit" class="btn">Create</button>
         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
