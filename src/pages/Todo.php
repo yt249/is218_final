@@ -5,7 +5,7 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
 </head>
 <body>
 <div class="container-fluid">
@@ -39,7 +39,6 @@
                             More
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="MyProfile.html">My Profile(Personal Info)</a>
                             <a class="dropdown-item" href="Settings.html">Settings</a>
                             <a class="dropdown-item" onclick="logout()">Logout</a>
 
@@ -61,13 +60,6 @@
 </script>
 <?php
 session_start();
-//
-// if(isset($_SESSION["login"]) != true){
-//     echo "<script>
-//             alert('You have not logged in');
-//             window.location.href='login.html';
-//           </script>";
-// }
 
 // AFS login
 $hostname = "sql1.njit.edu";
@@ -101,11 +93,9 @@ $createQuery = "CREATE TABLE IF NOT EXISTS 218Task(
 
 $error = "";
 if(isset($_POST['submit'])){
-	//$username = $_POST['username'];
 	$taskname = $_POST['taskName'];
 	$taskdescrip = $_POST['taskDescrip'];
 
-	//datetime format has to be yyyy-mm-dd(yyyy/mm/dd) hh:mm:ss (string type)
 	$duedate = $_POST['dueDate'];
 	$taskurgency = $_POST['priority'];
 	$username = $_SESSION['user'];
@@ -126,7 +116,6 @@ if(isset($_POST['submitedit'])){
 	$taskdescrip = $_POST['editDescription'];
 	$id = $_POST['stored'];
 
-	//datetime format has to be yyyy-mm-dd(yyyy/mm/dd) hh:mm:ss (string type)
 	$duedate = $_POST['editDueDate'];
 	$taskurgency = $_POST['editPriority'];
 	$completed = $_POST['editCompleted'];
@@ -203,6 +192,11 @@ function http_error($message) {
     <//img class = "rounded img-fluid" source media="(min-width: 960px)"srcset="images/beach.jpg" alt="beachfront">
     <div class = "col-2 col-8">
         <h3> Urgent</h3>
+        <?php
+            $query = "SELECT * FROM 218Task WHERE userName='$username' AND completed = false AND urgency = 2" ;
+            $tasknum = count(runQuery($query, $conn));
+            echo "<p>Total Tasks Number: $tasknum</p>";
+        ?>
         <p class = "text justify-content-evenly">
         <table id="taskTable" border='1px solid black' cellspacing='0' table-layout= 'fixed'>
         	<thead>
@@ -252,7 +246,7 @@ function http_error($message) {
                         $dueDays = $days.' days left';
                         echo "<td width='10%'>$dueDays</td>";
                     }else{
-                        $dueDays = (-$days).' days ago';
+                        $dueDays = (-$days-1).' days ago';
                         echo "<td width='10%'>$dueDays</td>";
                     }
         		echo "</tr>";
@@ -266,10 +260,10 @@ function http_error($message) {
     </div>
     <div class="col-4  text-center">
         <form action="" class="form-container" method="POST" id="myFormEdit">
-            <h2>Edit Section</h2>
-            Task Name: <input type="text" id="editTaskName" name="editTaskName"><br>
-            Description: <input type="text" id="editDescription" name="editDescription"><br>
-            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate"><br>
+            <h3>Edit Section</h2>
+            Task Name: <input type="text" id="editTaskName" name="editTaskName" required><br>
+            Description: <input type="text" id="editDescription" name="editDescription" required><br>
+            Due Date: <input type="datetime-local" id="editDueDate" name="editDueDate" placeholder="yyyy-mm-dd hh:mm" required><br>
             <span class = "validity"></span>
             Priority:
             <select id="editPriority" name="editPriority" class = "form-control">
@@ -283,17 +277,22 @@ function http_error($message) {
             	<option value=0 >     Uncomplete</option>
         	</select>
         	<input id="stored" name="stored" style="display:none;">
-
-            <button type="submit" name="submitedit" class="btn">Edit</button>
-            <button type="submit" name="submitdelete" class="btn">Delete</button>
-            <button type="button" class="btn cancel" onclick="clearForm()"> Close Form</button>
+            <br>
+            <button type="submit" name="submitedit" >Submit Edit</button>
+            <button type="submit" name="submitdelete">Delete</button>
+            <button type="button"  onclick="clearForm()"> Close Form</button>
     	</form>
         </div>
 </div>
 <div class = "row">
     <//img class = "rounded img-fluid" source media="(min-width: 960px)"srcset="images/beach.jpg" alt="beachfront">
     <div class = "col-2 col-8">
-        <h3> Tasks</h3>
+        <h3>Tasks</h3>
+        <?php
+            $query = "SELECT * FROM 218Task WHERE userName='$username' AND completed = false";
+            $tasknum = count(runQuery($query, $conn));
+            echo "<p>Total Tasks Number: $tasknum</p>";
+        ?>
         <p class = "text justify-content-evenly">
         <table id="taskTable" border='1px solid black' cellspacing='0' table-layout= 'fixed'>
         	<thead>
@@ -329,7 +328,7 @@ function http_error($message) {
                 $datetime = strtotime($result[dueDate]);
                 $secs = $datetime - $currentTime;
                 $days = floor($secs / 86400);
-                echo "<tr onclick='edit(this)'>";
+                echo "<tr onclick='edit(this)' style=':hover'>";
                     echo "<td style='display:none;' width='15%'>$result[taskid]</td>";
                     echo "<td width='15%'>$result[title]</td>";
                     echo "<td width='15%'>$result[descr]</td>";
@@ -340,7 +339,7 @@ function http_error($message) {
                         $dueDays = $days.' days left';
                         echo "<td width='10%'>$dueDays</td>";
                     }else{
-                        $dueDays = (-$days).' days ago';
+                        $dueDays = (-$days-1).' days ago';
                         echo "<td width='10%'>$dueDays</td>";
                     }
                 echo "</tr>";
@@ -367,6 +366,9 @@ function http_error($message) {
             border: 3px solid #f1f1f1;
 		}
 
+        tr:hover{
+            background-color: #e6e6ff;
+        }
 
         /* Button used to open the contact form - fixed at the bottom of the page */
         .open-button {
@@ -377,16 +379,16 @@ function http_error($message) {
             cursor: pointer;
             opacity: 0.8;
             position: fixed;
-            bottom: 23px;
+            bottom: 50px;
             right: 28px;
-            width: 280px;
+            width: 200px;
         }
 
         /* The popup form - hidden by default */
         .form-popup {
             display: none;
             position: fixed;
-            bottom: 5;
+            bottom: 47px;
             right: 15px;
             border: 3px solid #f1f1f1;
             z-index: 9;
@@ -397,6 +399,7 @@ function http_error($message) {
             max-width: 300px;
             padding: 10px;
             background-color: white;
+            margin:0;
         }
 
         /* Full-width input fields */
@@ -422,7 +425,7 @@ function http_error($message) {
             padding: 7px 10px;
             border: none;
             cursor: pointer;
-            width: 75%;
+            width: 100px;
             margin-bottom:10px;
             opacity: 0.8;
         }
@@ -436,6 +439,19 @@ function http_error($message) {
         .form-container .btn:hover, .open-button:hover {
             opacity: 1;
         }
+
+        ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            font-size: 17px;
+        }
+        ::-moz-placeholder { /* Firefox 19+ */
+            font-size: 17px;
+        }
+        :-ms-input-placeholder { /* IE 10+ */
+            font-size: 17px;
+        }
+        :-moz-placeholder { /* Firefox 18- */
+            font-size: 17px;
+        }
     </style>
 </head>
 <body>
@@ -443,26 +459,25 @@ function http_error($message) {
 
 <button class="open-button" onclick="openForm()">Add Task</button>
 
-<div class="form-popup" id="myForm">
+<div class="form-popup" id="myForm" style="text-align:center">
     <form action="" class="form-container" method="POST">
-        <h1>Add New Task</h1>
+        <h3>Add New Task</h1>
 
-        <label><b>Name</b></label>
+        <label>Name</label>
         <input type="text" placeholder="Enter name of task here" name="taskName" required>
 
-        <label><b>Description</b></label>
+        <label>Description</label>
         <input type="text" placeholder="Enter Description here" name="taskDescrip" required>
 
-        <label><b>Priority</b></label>
+        <label>Priority</label>
         <select name="priority" class = "form-control">
             <option value=0 >        Normal</option>
             <option value=1 >     Important</option>
             <option value=2 > Very-Important</option>
         </select>
-        <label><b>Date & Time</b></label>
-        <input id = "text" type = "datetime-local" name="dueDate">
-        <span class = "validity"></span>
-
+        <label>Date & Time</label>
+        <input id = "text" type = "datetime-local" name="dueDate" placeholder="yyyy-mm-dd hh:mm" required>
+        <br><br>
         <button type="submit" name="submit" class="btn">Create</button>
         <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
@@ -482,14 +497,9 @@ function http_error($message) {
 </body>
 
 </div>
-<footer class="footer page-footer font-small ">
-    <div class="container">
-        <div class="row">
-            <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
-        </div>
-    </div>
+<footer class="footer">
+    <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
 </footer>
-
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

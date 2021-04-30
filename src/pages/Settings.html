@@ -7,9 +7,31 @@
     let firstname = sessionStorage.getItem("firstname");
     let lastname = sessionStorage.getItem("lastname");
     if(login !== "true"){
-        alert("You have not logged in");
-        window.location.href = "login.html";
+        //alert("You have not logged in");
+        //window.location.href = "login.html";
     }
+
+    function changeOption() {
+        var choose = document.getElementById('editAcc');
+
+
+        if(choose.value == 'choose') {
+            document.getElementById("changeUser").style.display = 'none';
+            document.getElementById("changePass").style.display = 'none';
+        }
+
+        if(choose.value == 'user') {
+            document.getElementById("changeUser").style.display = 'block';
+            document.getElementById("changePass").style.display = 'none';
+        }
+
+        if(choose.value == 'pass') {
+            document.getElementById("changeUser").style.display = 'none';
+            document.getElementById("changePass").style.display = 'block';
+        }
+
+    }
+
 </script>
 <head>
     <meta charset="UTF-8">
@@ -19,7 +41,8 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <link href="css/main.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+    <script src="Validate.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -53,7 +76,6 @@
                             More
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="MyProfile.html">My Profile(Personal Info)</a>
                             <a class="dropdown-item" href="Settings.html">Settings</a>
                             <a class="dropdown-item" onclick="logout()">Logout</a>
 
@@ -64,6 +86,7 @@
         </nav>
 
     </div>
+
     <div class = "row">
         <div class = "col-10">
 
@@ -74,25 +97,67 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4  text-center">
-            <h2>Settings </h2>
+        <div class="col-4  text-center">
+            <h2>Settings</h2>
+        </div>
+        <div class="col-8"></div>
+    </div>
 
+    <br>
+    <br>
+
+    <div class="row">
+        <div class="col"></div>
+        <div class = "col" style = "text-align: center;">
+            <h3>What do you want to change?</h3>
+            <select id="editAcc" onchange="changeOption()" style="padding: 5px 5px">
+                <option value="choose" selected>Choose One</option>
+                <option value="user">Username</option>
+                <option value="pass">Password</option>
+            </select>
         </div>
+        <div class="col"></div>
     </div>
-    <div class = "card">
-        <//img class = "img-fluid" src="images/flagstaff.JPG" alt="Card image">
-        <div class = "card-body">
-            <p class ="card-text">Popout</p>
-        </div>
-    </div>
-    <footer class="footer page-footer font-small ">
-        <div class="container">
-            <div class="row">
-                <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
+
+    <br>
+    <br>
+    <div class="row">
+        <div class="col"></div>
+        <div class = "col">
+        <form id="changeUser" action="Settings.php" method='POST' onsubmit="return validatenewuser()" style="display: none; text-align: center;">
+        <br>
+            <div class="form-group">
+                <label for="newuser">New Username</label>
+                <input type="text" id="newuser" name="newuser" style="padding: 5px 5px">
             </div>
+            <br><br>
+        <button type="submit" name="editUser" class="btn btn-primary">Submit</button>
+        </form>
         </div>
+        <div class="col"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"></div>
+        <div class = "col">
+        <form id="changePass" action="Settings.php" method='POST' onsubmit="return validatenewpass()" style="display: none; text-align: center;">
+            <br>
+            <div class="form-group">
+                <label for="newpass">New Password</label>
+                <input type="text" id="newpass" name="newpass" style="padding: 5px 5px">
+            </div>
+            <br><br>
+            <button type="submit" name="editPass" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+    <div class="col"></div>
+    </div>
+
+
+    <footer class="footer">
+        <span class="text-muted">&copy; Group 1, 2021 |  Terms Of Use  |  Privacy Statement</span>
     </footer>
-</div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

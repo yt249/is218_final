@@ -43,6 +43,23 @@ function validate() {
         alert(err);
         return false;
     }
+}
+function validatenewuser() {
 
+    let newuser = document.getElementById("newuser");
+    let regex_user = new RegExp(/^(?!.*[.]{2})[^.][^&<>=_'\-+,]{2,20}[^.]$/);
+    if (!(regex_user.test(newuser.value))) {
+        alert("please enter a valid user name");
+        return false;
+    }
+}
+function validatenewpass() {
+
+    let newpass = document.getElementById("newpass");
+    let regex_password = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W]{8,30}$/);
+    if (!(regex_password.test(newpass.value))) {
+        alert("please enter a valid password");
+        return false;
+    }
 }
 
