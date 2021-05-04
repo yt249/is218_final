@@ -196,6 +196,8 @@ function http_error($message) {
         $query = "SELECT * FROM 218Task WHERE userName='$username' AND completed = true" ;
         $tasknum = count(runQuery($query, $conn));
         echo "<p>Total Tasks Number: $tasknum</p>";
+
+        echo "<p> Edits can made on a task by highlighting within the table</p>";
     ?>
     <p class = "text justify-content-evenly">
         <table id="taskTable" border='1px solid black' cellspacing='0' table-layout= 'fixed'>
